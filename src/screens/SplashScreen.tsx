@@ -63,20 +63,21 @@ export const SplashScreen: React.FC<Props> = ({ navigation }) => {
 
   const animValues = useRef(ASSETS.map(() => new Animated.Value(0))).current;
   const lineWidthAnim = useRef(new Animated.Value(0)).current;
+  const [animDone, setAnimDone] = React.useState(false);
 
+  // Load stored auth on mount
   useEffect(() => {
     dispatch(loadStoredAuth());
   }, [dispatch]);
 
+  // Run animations exactly once on mount
   useEffect(() => {
-    // 1. Line drawing animation: Line grows from left (0) to right (W) in 1200ms
     Animated.timing(lineWidthAnim, {
       toValue: W,
       duration: 1200,
-      useNativeDriver: false, // Required for SVG props
+      useNativeDriver: false,
     }).start();
 
-    // 2. Staggered animation: pop each icon one by one exactly when the line reaches them
     const animations = animValues.map((anim) =>
       Animated.spring(anim, {
         toValue: 1,
@@ -87,17 +88,23 @@ export const SplashScreen: React.FC<Props> = ({ navigation }) => {
     );
 
     Animated.stagger(300, animations).start(() => {
-      setTimeout(() => {
-        if (!isLoading) {
-          if (isAuthenticated) {
-            navigation.replace('Home');
-          } else {
-            navigation.replace('Welcome');
-          }
-        }
-      }, 500);
+      setAnimDone(true); // triggers re-render → navigation useEffect runs
     });
-  }, [animValues, lineWidthAnim, isLoading, isAuthenticated, navigation]);
+  }, []); // Empty deps — run only once
+
+  // Navigate when BOTH animation is done AND auth is resolved
+  useEffect(() => {
+    if (animDone && !isLoading) {
+      const timer = setTimeout(() => {
+        if (isAuthenticated) {
+          navigation.replace('Home');
+        } else {
+          navigation.replace('Welcome');
+        }
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [animDone, isLoading, isAuthenticated, navigation]);
 
   return (
     <ImageBackground

@@ -7,6 +7,7 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Home: undefined;
+  Profile: undefined;
 };
 
 export type NavigationProps<T extends keyof RootStackParamList> = {

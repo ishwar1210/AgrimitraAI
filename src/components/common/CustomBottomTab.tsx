@@ -10,7 +10,7 @@ import {
 import { BlurView } from 'expo-blur';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-export type TabType = 'home' | 'farms' | 'scan' | 'schedule' | 'profile';
+export type TabType = 'home' | 'farms' | 'scan' | 'schedule';
 
 interface CustomBottomTabProps {
   activeTab: TabType;
@@ -119,30 +119,6 @@ export const CustomBottomTab: React.FC<CustomBottomTabProps> = ({
             ]}
           >
             Schedule
-          </Text>
-        </TouchableOpacity>
-
-        {/* 5. Profile Tab */}
-        <TouchableOpacity
-          style={[
-            styles.tabItem,
-            activeTab === 'profile' && styles.activeTabItem,
-          ]}
-          activeOpacity={0.8}
-          onPress={() => onTabChange('profile')}
-        >
-          <Ionicons
-            name="person-outline"
-            size={22}
-            color={activeTab === 'profile' ? '#0F7038' : '#667085'}
-          />
-          <Text
-            style={[
-              styles.tabLabel,
-              activeTab === 'profile' && styles.activeTabLabel,
-            ]}
-          >
-            Profile
           </Text>
         </TouchableOpacity>
       </BlurView>

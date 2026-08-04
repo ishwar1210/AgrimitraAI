@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from '../screens/dashboard/HomeScreen';
+import { FarmerDashboardScreen } from '../screens/farmer/FarmerDashboardScreen';
 import { PlaceholderScreen } from '../screens/dashboard/PlaceholderScreen';
 import { CustomBottomTab, TabType } from '../components/common/CustomBottomTab';
 
@@ -9,7 +9,6 @@ export type MainTabParamList = {
   Farms: undefined;
   Scan: undefined;
   Schedule: undefined;
-  Profile: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -17,7 +16,6 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 const FarmsScreen = () => <PlaceholderScreen title="My Farms" icon="🌱" />;
 const ScanScreen = () => <PlaceholderScreen title="Crop Disease Scanner" icon="🔍" />;
 const ScheduleScreen = () => <PlaceholderScreen title="Farming Schedule" icon="📅" />;
-const ProfileScreen = () => <PlaceholderScreen title="Farmer Profile" icon="👤" />;
 
 export const MainTabNavigator: React.FC = () => {
   return (
@@ -32,7 +30,6 @@ export const MainTabNavigator: React.FC = () => {
           1: 'farms',
           2: 'scan',
           3: 'schedule',
-          4: 'profile',
         };
 
         const activeTab = routeNameMap[state.index] || 'home';
@@ -51,9 +48,6 @@ export const MainTabNavigator: React.FC = () => {
             case 'schedule':
               navigation.navigate('Schedule');
               break;
-            case 'profile':
-              navigation.navigate('Profile');
-              break;
           }
         };
 
@@ -65,11 +59,10 @@ export const MainTabNavigator: React.FC = () => {
         );
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home" component={FarmerDashboardScreen} />
       <Tab.Screen name="Farms" component={FarmsScreen} />
       <Tab.Screen name="Scan" component={ScanScreen} />
       <Tab.Screen name="Schedule" component={ScheduleScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };
